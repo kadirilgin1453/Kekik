@@ -11,9 +11,7 @@ def indirilebilir_mi(url:str) -> bool:
     content_type = header.get('content-type')
     if 'text' in content_type.lower():
         return False
-    if 'html' in content_type.lower():
-        return False
-    return True
+    return 'html' not in content_type.lower()
 
 def dosya_indir(url:str, dosya_adi:str=None) -> Optional[str]:
     kontrol = indirilebilir_mi(url)
@@ -23,10 +21,9 @@ def dosya_indir(url:str, dosya_adi:str=None) -> Optional[str]:
 
     if not dosya_adi:
         dosya_adi = unquote(url.split("/")[-1])
-    else:
-        if "." not in dosya_adi:
-            uzanti = unquote(url.split("/")[-1]).split(".")[-1]
-            dosya_adi = f"{dosya_adi}.{uzanti}"
+    elif "." not in dosya_adi:
+        uzanti = unquote(url.split("/")[-1]).split(".")[-1]
+        dosya_adi = f"{dosya_adi}.{uzanti}"
 
     istek = requests.get(url, stream=True)
     dosya_boyutu = int(istek.headers.get('content-length', 0))

@@ -33,4 +33,4 @@ def benim_hwid() -> str:
 
 def hwid_kontrol(kontrol_url:str) -> bool:
     # Çevrimiçi HWID Kontrolü
-    return bool(benim_hwid() in get(kontrol_url).text)
+    return benim_hwid() in get(kontrol_url).text
